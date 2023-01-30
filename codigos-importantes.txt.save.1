@@ -1,0 +1,124 @@
+cat para abrir archivos "archivos.txt" etc
+cat > para crear un archivo y abrirlo
+nano "fichero.txt" = puedo modificar el fichero
+
+INSTALACION DE APPS
+sudo = acceder al sistema como root
+apt-get forma sencilla de instalar paquetes , a != dpkg no intenta comprender los ficheros ".deb" y solo puede instalar un ".deb" desde una fuente
+apt-get install
+apt-get update = actualiza la lista de paquetes disponibles para instalar
+apt-get upgrade = instala nuevas versiones de != paquetes disp
+dkpg = gestor de paquetes debian
+wget = download files from the web
+apt-key = herramienta para gestior claves de APT
+mv old_file new_file = renombrar directorios
+
+MANEJO DE APPS
+
+MYSQL Workbench
+	- sudo mysql -u rooy -p
+
+MONGO DB
+ - iniciar -> sudo systemctl start mongod
+ - detener -> sudo systemctl stop mongod
+ - verificar si esta activo -> sudo systemctl status mongod
+
+ - acceder a Mongo DB = mongosh
+ - crear una DataBase = use "database name" (first-db-test)
+ - acceder a una DataBase previamente hecha = use "database name" (first-db-test)
+ - ver las dbs = show dbs
+ - ver las colecciones (estan dentro de las db) = show collections
+ - eliminar colecciones = db."nombre coleccion".drop()
+ - eliminar bd = db.dropDatabase()
+ - insertar datos = db.usuariosDatos.insertne({})
+  # Operaciones CRUD = Crete, Read , Update , Delete
+          - C: insertOne(data, options), instertMany(d,o)
+          - R: find(filter, option), findOne(f,o)
+	  - U: updateOne(filter, data, options),updateMany(f,d,o), replaceOne(f,d,o)
+	  - D: deleteOne(filter, options), deleteMany(f,o)
+- atomic operators, son necesarios para actualizar por ejemplo {$set: {marcador:"borrar"}
+          - Cuando esta con signo $ y una palabra despues, es un perador atomico
+
+- en las relaciones se deben usar referencias que se  hacen con el id respectivo "ObjectId("34g32hj4n1asd")
+- para importar .json fuera de mongo en la carpeta donde esta el archivo:
+	# mongoimport archivo.json -d "nombre db" -c "nombre collection" --jsonArray
+		+ jsonArray es si vienen como matriz []
+
+- Framework de Agregacion: sirv para transformar los datos, alternativa q creas pasos y combinarlos seguidos para hcer cosas estructuradas
+		#  ejemplos:aggregation piplin stages (VER)
+	+ db."collection name".aggregate([ {$funcion: {campo:"filtro"}}])
+	- $match: es similar a find $match: {gender:"female"} 
+	- $group: +..., {$group: {_id: {ciudad:"$location.city"},"nombre d columna":{$op.acc: Q(cantidad)}
+		- "op.acc" : podemos usar operadores de acumulacion: por ejemplo suma $sum:1 que suma 1 por cada coincidencia
+		- hace agrupaciones por alguna operacion
+	-
+ $sort: ordena los datos
+	- $project: hace mas o menos lo mismo qe los otros 3 juntos, 
+
+
+JUPYTER
+ - iniciar -> jupyter notebook
+
+GIT
+token: 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 
+ - herramienta de control de versiones
+ - servicio de hosting de repositoriso GIT: GitHub, GitLab, BitBucket
+ - Commit: nos guarda los archivos a la ultima version y se guarda en el "master" brunch
+	- luego quiero cambiar solo el style.css (v.2) hago un commint 2
+	- quier cmbiar otra vez algo (v.3) commit 3
+ - para ver el usuario y el correo de config: git config --list
+
+ comandos git
+	+ git init (empezar un repositorio)
+	+ git status (ver el estatus)
+	+ git add . ("." es para agregar todo)
+	+ git log: ver los commit que se han hecho
+	+ git checkout podemos volver a una version anterior con el codigo del branch si uso master en vez del id, vuelvo a lo que estaba antes.
+
+	- branch: cambiar de rama
+	+ git branch: muestra la rama en la que estamos
+	+ git checkout -b "nombre de rama": crea una nueva rama y te cambia a esa
+	- pull: descargar los cambios
+	- add: añadir los cambios antes de guardarlos
+	- commit: publicar los cambios
+	- push: empujar hacia el repositorio
+	- merge: unir ramas
+	+ git merge "nombre de commit"
+	- git rm "nombre commit"
+
+- Ramas -> Branch
+	- master branch: es la que tiene todo, la que esta en linea, la q se publica
+	- branch secundaria: para hacer pruebas, para unirlas se usa merge
+	 
+- HEAD  -> el ultimo commit, el mas adelantado, pueden haber varias o solo una que tiene la HEAD
+- detached HEAD   - commit previos de otras ramas que antes fueron HEAD
+- git switch: cambiar de rama mas rapido, si agrego "-c" se crea la rama si esq esta no existe
+- git ls-files: muestra los archivos de la rama
+      #merge
+	- Fast-Forward: se ha adelantado el Head de master a cambios, solo se mueve el pointer(HEAD)
+	- merge --squash "nombre de rama"  sin crear un commit (squash es aplastar), unimos todos los cambios y los commit en un solo commit cuando hacemos la union  y el HEAD solo queda en el master
+	- Recursivo: git merge --no-ff (no quiero usar FastForward) te da toda la historia de los commit
+- git tag: reestructurar proyectos
+	- git tag (nos saldran lso tag que hemos hecho)
+	- copio el id del commit... git tag "nombre tag" "id"
+	- git show "nombre tag" -> muestra la info de este git
+	- git log muestra el nombre del tag y puedo usarlo con el tag git tcheckout "nombre tag"
+     #GITHUB
+	- git push: empujas al repositorio remoto
+	- git pull: descargar el repositorio a local
+	- git clone: clonar el repositorio remoto y poder trabajar en el local
+	#conectar el git local al remoto
+	- git remote add origin "URL"
+	- git push origin master
+	# ramas
+	- git branch -r --> veo todas las ramas que estan en github
+	- git branch -a --> veo todas las ramas q hay subidas
+	- git push origin "nombre rama"
+	- git ls-remote --> creo una conexion a nuestro origin (URL)
+	- git fetch origin --> nos trae los cambios q hemos hecho en remoto, no esta merge
+	- git pull origin master --> combinacion de fetch y merge, tenemos que asignar la rama
+	- git branch --track "nombre rama" origin/"nombre rama" --> sirve para dejarla seteada y no tener que especificar luego para hacer un push u otros (tracking local)
+	- git clone "URL", luego cambiar a la carpeta, y luego git pull, ahi esta up to date
+	#upstream
+	- forma mas sencilla de crear y empujar estos cambios, trackea automaticamente
+	- git push -u origin "nombre rama"
